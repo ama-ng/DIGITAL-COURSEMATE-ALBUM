@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classmates Digital Album | Secure Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.2/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .card-hover:hover { transform: translateY(-4px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #authOverlay { backdrop-filter: blur(8px); transition: opacity 0.5s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen">
+
+    <div id="authOverlay" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-6">
+        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full text-center">
+            <div class="text-4xl mb-4">🔒</div>
+            <h2 class="text-2xl font-black mb-2 dark:text-white">Private Access</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm">Please enter the class password to view the digital album.</p>
+            <input type="password" id="passInput" onkeydown="if(event.key==='Enter') verifyPass()" placeholder="Enter Password" 
+                   class="w-full p-4 rounded-xl border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 outline-none focus:border-indigo-500 dark:focus:border-indigo-500 mb-4 transition-all text-center font-bold tracking-widest">
+            <button onclick="verifyPass()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-indigo-200 dark:shadow-none">
+                Unlock Album
+            </button>
+            <p id="errorMsg" class="text-red-500 text-xs mt-4 font-bold hidden">Incorrect Password. Try again.</p>
+        </div>
+    </div>
+
+    <div id="appContent" class="opacity-0 transition-opacity duration-1000">
+        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex justify-between items-center shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🎓</span>
+                <h1 class="text-xl font-extrabold tracking-tight text-indigo-900 dark:text-indigo-400">CLASS<span class="text-indigo-500">ALBUM</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button onclick="generateFullAlbum()" id="pdfBtn" class="hidden md:flex bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition items-center gap-2 shadow-md">
+                    <span>Download PDF</span>
+                </button>
+                <button onclick="logout()" class="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 transition border border-red-100 dark:border-red-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto p-6 lg:p-10">
+            <div id="statsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Top State Origin</p>
+                    <h3 id="statTopState" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Most Popular Teacher</p>
+                    <h3 id="statTopTeacher" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Total Countries</p>
+                    <h3 id="statCountries" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl mb-12">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Search Students</label>
+                        <input type="text" id="searchInput" onkeyup="updateDisplay()" placeholder="Type a name, nickname..." 
+                               class="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none text-lg">
+                    </div>
+                    <div class="w-full lg:w-72">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Group By Area</label>
+                        <select id="groupSelect" onchange="updateDisplay()" class="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-medium">
+                            <option value="none">Show All</option>
+                            <option value="State">By State</option>
+                            <option value="LGA">By LGA</option>
+                            <option value="Country">By Country</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="resultCount" class="mt-4 text-xs font-bold text-indigo-500 uppercase">Ready to scan...</div>
+            </div>
+
+            <div id="displayContainer" class="space-y-20"></div>
+        </main>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION ---
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTQEM1GkYUrAHI8YxPQ-wcb1PMnkmsw4FzTApAaRwsxPw8L4ZwZHfaSU2vP5zAwDdyYnzJpTRXYKVS_/pub?gid=682763049&single=true&output=csv'; 
+        const APP_PASSWORD = 'ClassOf2026'; // CHANGE THIS PASSWORD
+
+        let students = [];
+
+        // --- 2. AUTHENTICATION LOGIC ---
+        function verifyPass() {
+            const val = document.getElementById('passInput').value;
+            const error = document.getElementById('errorMsg');
+            if(val === APP_PASSWORD) {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').classList.remove('opacity-0');
+                localStorage.setItem('album_auth', 'true');
+                init(); // Start fetching data only after login
+            } else {
+                error.classList.remove('hidden');
+                document.getElementById('passInput').value = '';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('album_auth');
+            location.reload();
+        }
+
+        // Auto-login if previously authenticated
+        window.onload = () => {
+            if(localStorage.getItem('album_auth') === 'true') {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').classList.remove('opacity-0');
+                init();
+            }
+        }
+
+        // --- 3. THEME & UTILS ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            icon.innerText = isDark ? '☀️' : '🌙';
+            localStorage.theme = isDark ? 'dark' : 'light';
+        }
+        if (localStorage.theme === 'dark') document.documentElement.classList.add('dark');
+
+        function formatImg(url) {
+            if(!url || !url.includes('id=')) return url || 'https://via.placeholder.com/400?text=No+Photo';
+            const id = url.split('id=')[1].split('&')[0];
+            return `https://drive.google.com/thumbnail?id=${id}&sz=w600`;
+        }
+
+        // --- 4. DATA CORE ---
+        async function init() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const csvData = await response.text();
+                Papa.parse(csvData, {
+                    header: true, skipEmptyLines: true,
+                    complete: (res) => {
+                        students = res.data;
+                        runAnalytics(students);
+                        updateDisplay();
+                    }
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        function runAnalytics(data) {
+            const stats = { states: {}, teachers: {}, countries: new Set() };
+            data.forEach(s => {
+                if(s.State) stats.states[s.State] = (stats.states[s.State] || 0) + 1;
+                if(s['Favorite Teacher']) stats.teachers[s['Favorite Teacher']] = (stats.teachers[s['Favorite Teacher']] || 0) + 1;
+                if(s.Country) stats.countries.add(s.Country);
+            });
+            const topS = Object.keys(stats.states).reduce((a, b) => stats.states[a] > stats.states[b] ? a : b, "N/A");
+            const topT = Object.keys(stats.teachers).reduce((a, b) => stats.teachers[a] > stats.teachers[b] ? a : b, "N/A");
+            document.getElementById('statTopState').innerText = topS;
+            document.getElementById('statTopTeacher').innerText = topT;
+            document.getElementById('statCountries').innerText = stats.countries.size;
+        }
+
+        function updateDisplay() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const groupBy = document.getElementById('groupSelect').value;
+            const container = document.getElementById('displayContainer');
+            
+            const filtered = students.filter(s => 
+                (s['Full Name'] || '').toLowerCase().includes(query) || 
+                (s['Nickname'] || '').toLowerCase().includes(query)
+            );
+
+            document.getElementById('resultCount').innerText = `${filtered.length} Students Displayed`;
+            container.innerHTML = '';
+
+            if (groupBy === 'none') {
+                renderGrid(container, filtered, "Class Directory");
+            } else {
+                const groups = {};
+                filtered.forEach(s => {
+                    const key = s[groupBy] || "Unspecified Area";
+                    if (!groups[key]) groups[key] = [];
+                    groups[key].push(s);
+                });
+                Object.keys(groups).sort().forEach(g => renderGrid(container, groups[g], g));
+            }
+        }
+
+        function renderGrid(parent, list, title) {
+            const section = document.createElement('section');
+            section.innerHTML = `
+                <div class="flex items-center gap-6 mb-10">
+                    <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">${title}</h2>
+                    <div class="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    ${list.map(s => `
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 card-hover">
+                            <div class="aspect-square w-full mb-6 rounded-[2rem] bg-slate-100 dark:bg-slate-900 overflow-hidden ring-4 ring-indigo-50 dark:ring-indigo-900/20">
+                                <img src="${formatImg(s['Profile Picture'])}" class="w-full h-full object-cover" loading="lazy">
+                            </div>
+                            <h3 class="text-center font-black text-slate-800 dark:text-white text-lg leading-tight mb-1">${s['Full Name']}</h3>
+                            <p class="text-center text-indigo-500 font-bold italic text-sm mb-5">"${s['Nickname'] || ''}"</p>
+                            <div class="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 text-[11px]">
+                                <div class="flex justify-between font-bold"><span class="text-slate-400">STATE</span><span class="text-slate-700 dark:text-slate-300">${s['State'] || '-'}</span></div>
+                                <div class="flex justify-between font-bold"><span class="text-slate-400">PHONE</span><span class="text-slate-700 dark:text-slate-300">${s['Phone Number'] || '-'}</span></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            parent.appendChild(section);
+        }
+
+        // --- 5. PDF ENGINE ---
+        async function generateFullAlbum() {
+            const btn = document.getElementById('pdfBtn');
+            btn.innerHTML = "🎨 Building Album...";
+            btn.disabled = true;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pw = doc.internal.pageSize.getWidth();
+            const ph = doc.internal.pageSize.getHeight();
+
+            // Cover
+            doc.setFillColor(30, 27, 75); doc.rect(0, 0, pw, ph, 'F');
+            doc.setTextColor(255); doc.setFontSize(40); doc.text("CLASS ALBUM", pw/2, ph/2, {align:"center"});
+
+            for (let i = 0; i < students.length; i++) {
+                if (i % 4 === 0) doc.addPage();
+                const s = students[i];
+                const col = (i%4)%2; const row = Math.floor((i%4)/2);
+                const x = 15 + (col * 90); const y = 20 + (row * 130);
+                
+                doc.setDrawColor(220); doc.roundedRect(x, y, 85, 120, 5, 5);
+                
+                try {
+                    const img = await new Promise(r => {
+                        const i = new Image(); i.crossOrigin="anonymous";
+                        i.onload = () => r(i); i.onerror = () => r(null);
+                        i.src = formatImg(s['Profile Picture']);
+                    });
+                    if(img) doc.addImage(img, 'JPEG', x+17.5, y+10, 50, 50);
+                } catch(e) {}
+
+                doc.setTextColor(0); doc.setFontSize(12); doc.text(s['Full Name'] || '', x+42.5, y+70, {align:"center"});
+                doc.setTextColor(100); doc.setFontSize(8); 
+                doc.text(`Origin: ${s['LGA']}, ${s['State']}`, x+10, y+85);
+                doc.text(`Contact: ${s['Phone Number']}`, x+10, y+91);
+            }
+            doc.save("Class_Yearbook.pdf");
+            btn.innerHTML = "Download PDF"; btn.disabled = false;
+        }
+    </script>
+</body>
+</html>
