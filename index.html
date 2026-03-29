@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classmates Digital Album | Secure Access</title>
+    <title>ATBU Civil Engineering - Class of 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.2/papaparse.min.js"></script>
@@ -13,229 +13,262 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .card-hover:hover { transform: translateY(-4px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        #authOverlay { backdrop-filter: blur(8px); transition: opacity 0.5s ease; }
+        .card-hover:hover { transform: translateY(-6px); transition: all 0.3s ease; }
+        .slider-img { display: none; width: 100%; height: 450px; object-fit: cover; filter: brightness(0.6); }
+        .slider-img.active { display: block; animation: fadeIn 1s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen">
 
-    <div id="authOverlay" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-6">
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full text-center">
-            <div class="text-4xl mb-4">🔒</div>
-            <h2 class="text-2xl font-black mb-2 dark:text-white">Private Access</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm">Please enter the class password to view the digital album.</p>
-            <input type="password" id="passInput" onkeydown="if(event.key==='Enter') verifyPass()" placeholder="Enter Password" 
-                   class="w-full p-4 rounded-xl border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 outline-none focus:border-indigo-500 dark:focus:border-indigo-500 mb-4 transition-all text-center font-bold tracking-widest">
-            <button onclick="verifyPass()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-indigo-200 dark:shadow-none">
-                Unlock Album
-            </button>
-            <p id="errorMsg" class="text-red-500 text-xs mt-4 font-bold hidden">Incorrect Password. Try again.</p>
+    <div id="authOverlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-6">
+        <div class="bg-white dark:bg-slate-800 p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border-t-8 border-indigo-600">
+            <img src="logo.png" alt="ATBU Logo" class="w-24 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/100?text=ATBU'">
+            <h2 class="text-xl font-black mb-1 dark:text-white uppercase">Civil Engineering</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm font-bold tracking-widest uppercase">Class of 2026 Portal</p>
+            <input type="password" id="passInput" onkeydown="if(event.key==='Enter') verifyPass()" placeholder="Enter Portal Password" 
+                   class="w-full p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 outline-none focus:border-indigo-500 text-center font-bold tracking-widest mb-4">
+            <button onclick="verifyPass()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl transition shadow-xl">UNLOCK DIRECTORY</button>
+            <p id="errorMsg" class="text-red-500 text-xs mt-4 font-bold hidden">Invalid Password.</p>
         </div>
     </div>
 
-    <div id="appContent" class="opacity-0 transition-opacity duration-1000">
-        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex justify-between items-center shadow-sm">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl">🎓</span>
-                <h1 class="text-xl font-extrabold tracking-tight text-indigo-900 dark:text-indigo-400">CLASS<span class="text-indigo-500">ALBUM</span></h1>
+    <div id="appContent" class="hidden opacity-0 transition-opacity duration-1000">
+        
+        <header class="bg-indigo-900 text-white py-10 px-6 text-center">
+            <img src="logo.png" alt="ATBU Logo" class="w-20 mx-auto mb-4" onerror="this.style.display='none'">
+            <h1 class="text-2xl md:text-4xl font-black tracking-tighter">ABUBAKAR TAFAWA BALEWA UNIVERSITY BAUCHI</h1>
+            <p class="text-indigo-300 font-bold mt-2 text-lg uppercase tracking-widest">Department of Civil Engineering | Class of 2026</p>
+        </header>
+
+        <div class="relative w-full overflow-hidden bg-slate-800 h-[450px]">
+            <img src="atbu1.jpg" class="slider-img active" alt="ATBU Campus 1">
+            <img src="atbu2.jpg" class="slider-img" alt="ATBU Campus 2">
+            <img src="atbu3.jpg" class="slider-img" alt="ATBU Campus 3">
+            <div class="absolute inset-0 flex items-center justify-center p-6">
+                <div class="max-w-4xl text-center text-white">
+                    <h2 class="text-3xl md:text-6xl font-black mb-6 italic leading-tight">"Building the Future, <br>One Structure at a Time."</h2>
+                    <p class="text-lg md:text-xl font-medium opacity-90 mb-8">Welcome to the official memory hub for our graduating class. Connect with classmates and preserve our journey together.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdngpZjlx1OXwB0QucMAaCif5DWQv-QMEnrgGm4f0IVVF0dGg/viewform" target="_blank" 
+                       class="bg-white text-indigo-900 px-8 py-4 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform inline-block">
+                        Register Your Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sticky top-0 z-50 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center gap-4 shadow-lg">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="h-8 w-px bg-slate-300 dark:bg-slate-600 hidden sm:block"></div>
+                <span class="font-black text-indigo-600 dark:text-indigo-400 hidden sm:inline">ATBU CIVIL '26</span>
             </div>
             
             <div class="flex items-center gap-3">
-                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
-                    <span id="themeIcon">🌙</span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdngpZjlx1OXwB0QucMAaCif5DWQv-QMEnrgGm4f0IVVF0dGg/viewform" target="_blank" 
+                   class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-md flex items-center gap-2">
+                    <span>Add My Info</span>
+                </a>
+                <button onclick="generateFullAlbum()" id="pdfBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-md">
+                    Export PDF
                 </button>
-                <button onclick="generateFullAlbum()" id="pdfBtn" class="hidden md:flex bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition items-center gap-2 shadow-md">
-                    <span>Download PDF</span>
-                </button>
-                <button onclick="logout()" class="p-2.5 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 transition border border-red-100 dark:border-red-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <button onclick="logout()" class="p-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
                     </svg>
                 </button>
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto p-6 lg:p-10">
-            <div id="statsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Top State Origin</p>
-                    <h3 id="statTopState" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+        <main class="max-w-7xl mx-auto p-6 lg:p-12">
+            
+            <div id="statsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Major Origin</p>
+                    <h3 id="statTopState" class="text-3xl font-black text-indigo-600 dark:text-indigo-400">...</h3>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Most Popular Teacher</p>
-                    <h3 id="statTopTeacher" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Favorite Mentor</p>
+                    <h3 id="statTopTeacher" class="text-3xl font-black text-green-600 dark:text-green-400">...</h3>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Total Countries</p>
-                    <h3 id="statCountries" class="text-3xl font-black text-slate-800 dark:text-white">...</h3>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Total Countries</p>
+                    <h3 id="statCountries" class="text-3xl font-black text-orange-600 dark:text-orange-400">...</h3>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl mb-12">
-                <div class="flex flex-col lg:flex-row gap-6">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 shadow-xl mb-16">
+                <div class="flex flex-col lg:flex-row gap-8">
                     <div class="flex-1">
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Search Students</label>
-                        <input type="text" id="searchInput" onkeyup="updateDisplay()" placeholder="Type a name, nickname..." 
-                               class="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none text-lg">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Filter Dashboard</label>
+                        <input type="text" id="searchInput" onkeyup="updateDisplay()" placeholder="Search by name, nickname, or teacher..." 
+                               class="w-full bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border-none ring-2 ring-slate-100 dark:ring-slate-700 focus:ring-4 focus:ring-indigo-500 outline-none text-lg transition-all">
                     </div>
-                    <div class="w-full lg:w-72">
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Group By Area</label>
-                        <select id="groupSelect" onchange="updateDisplay()" class="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border-none ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-medium">
-                            <option value="none">Show All</option>
-                            <option value="State">By State</option>
-                            <option value="LGA">By LGA</option>
-                            <option value="Country">By Country</option>
+                    <div class="w-full lg:w-80">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Group By Area</label>
+                        <select id="groupSelect" onchange="updateDisplay()" class="w-full bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border-none ring-2 ring-slate-100 dark:ring-slate-700 focus:ring-4 focus:ring-indigo-500 outline-none text-lg font-bold">
+                            <option value="none">Standard Grid</option>
+                            <option value="state">Group by State</option>
+                            <option value="lga">Group by LGA</option>
+                            <option value="country">Group by Country</option>
                         </select>
                     </div>
                 </div>
-                <div id="resultCount" class="mt-4 text-xs font-bold text-indigo-500 uppercase">Ready to scan...</div>
             </div>
 
-            <div id="displayContainer" class="space-y-20"></div>
+            <div id="displayContainer" class="space-y-24"></div>
         </main>
     </div>
 
     <script>
-        // --- 1. CONFIGURATION ---
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTQEM1GkYUrAHI8YxPQ-wcb1PMnkmsw4FzTApAaRwsxPw8L4ZwZHfaSU2vP5zAwDdyYnzJpTRXYKVS_/pub?gid=682763049&single=true&output=csv'; 
-        const APP_PASSWORD = 'ClassOf2026'; // CHANGE THIS PASSWORD
+        // --- CONFIGURATION ---
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTQEM1GkYUrAHI8YxPQ-wcb1PMnkmsw4FzTApAaRwsxPw8L4ZwZHfaSU2vP5zAwDdyYnzJpTRXYKVS_/pub?gid=682763049&single=true&output=csv';
+        const APP_PASSWORD = 'ATBU_CIVIL_2026'; 
 
         let students = [];
 
-        // --- 2. AUTHENTICATION LOGIC ---
+        // --- AUTH LOGIC ---
         function verifyPass() {
-            const val = document.getElementById('passInput').value;
-            const error = document.getElementById('errorMsg');
-            if(val === APP_PASSWORD) {
+            if(document.getElementById('passInput').value === APP_PASSWORD) {
                 document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('appContent').classList.remove('opacity-0');
-                localStorage.setItem('album_auth', 'true');
-                init(); // Start fetching data only after login
-            } else {
-                error.classList.remove('hidden');
-                document.getElementById('passInput').value = '';
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('album_auth');
-            location.reload();
-        }
-
-        // Auto-login if previously authenticated
-        window.onload = () => {
-            if(localStorage.getItem('album_auth') === 'true') {
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('appContent').classList.remove('opacity-0');
+                document.getElementById('appContent').classList.remove('hidden');
+                setTimeout(() => document.getElementById('appContent').classList.add('opacity-100'), 50);
+                localStorage.setItem('atbu_auth', 'true');
                 init();
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
             }
         }
-
-        // --- 3. THEME & UTILS ---
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            icon.innerText = isDark ? '☀️' : '🌙';
-            localStorage.theme = isDark ? 'dark' : 'light';
-        }
-        if (localStorage.theme === 'dark') document.documentElement.classList.add('dark');
-
-        function formatImg(url) {
-            if(!url || !url.includes('id=')) return url || 'https://via.placeholder.com/400?text=No+Photo';
-            const id = url.split('id=')[1].split('&')[0];
-            return `https://drive.google.com/thumbnail?id=${id}&sz=w600`;
+        function logout() { localStorage.removeItem('atbu_auth'); location.reload(); }
+        if(localStorage.getItem('atbu_auth') === 'true') {
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('appContent').classList.remove('hidden', 'opacity-0');
+            init();
         }
 
-        // --- 4. DATA CORE ---
+        // --- SLIDER ENGINE ---
+        let slideIdx = 0;
+        setInterval(() => {
+            const slides = document.querySelectorAll('.slider-img');
+            slides.forEach(s => s.classList.remove('active'));
+            slideIdx = (slideIdx + 1) % slides.length;
+            slides[slideIdx].classList.add('active');
+        }, 5000);
+
+        // --- DATA NORMALIZER ---
+        function normalizeData(data) {
+            return data.map(row => {
+                const clean = {};
+                for(let key in row) {
+                    const k = key.toLowerCase();
+                    if(k.includes('name')) clean.name = row[key];
+                    else if(k.includes('nick')) clean.nick = row[key];
+                    else if(k.includes('picture')) clean.pic = row[key];
+                    else if(k.includes('teacher')) clean.teacher = row[key];
+                    else if(k.includes('phone')) clean.phone = row[key];
+                    else if(k.includes('state')) clean.state = row[key];
+                    else if(k.includes('lga')) clean.lga = row[key];
+                    else if(k.includes('country')) clean.country = row[key];
+                    else if(k.includes('email')) clean.email = row[key];
+                }
+                return clean;
+            });
+        }
+
         async function init() {
             try {
-                const response = await fetch(SHEET_URL);
-                const csvData = await response.text();
-                Papa.parse(csvData, {
+                const res = await fetch(SHEET_URL);
+                const text = await res.text();
+                Papa.parse(text, {
                     header: true, skipEmptyLines: true,
                     complete: (res) => {
-                        students = res.data;
-                        runAnalytics(students);
+                        students = normalizeData(res.data);
+                        calculateInsights(students);
                         updateDisplay();
                     }
                 });
-            } catch (err) { console.error(err); }
+            } catch(e) { console.error("CSV Load Error:", e); }
         }
 
-        function runAnalytics(data) {
-            const stats = { states: {}, teachers: {}, countries: new Set() };
-            data.forEach(s => {
-                if(s.State) stats.states[s.State] = (stats.states[s.State] || 0) + 1;
-                if(s['Favorite Teacher']) stats.teachers[s['Favorite Teacher']] = (stats.teachers[s['Favorite Teacher']] || 0) + 1;
-                if(s.Country) stats.countries.add(s.Country);
+        function calculateInsights(data) {
+            const s = {}, t = {}, c = new Set();
+            data.forEach(x => {
+                if(x.state) s[x.state] = (s[x.state] || 0) + 1;
+                if(x.teacher) t[x.teacher] = (t[x.teacher] || 0) + 1;
+                if(x.country) c.add(x.country);
             });
-            const topS = Object.keys(stats.states).reduce((a, b) => stats.states[a] > stats.states[b] ? a : b, "N/A");
-            const topT = Object.keys(stats.teachers).reduce((a, b) => stats.teachers[a] > stats.teachers[b] ? a : b, "N/A");
-            document.getElementById('statTopState').innerText = topS;
-            document.getElementById('statTopTeacher').innerText = topT;
-            document.getElementById('statCountries').innerText = stats.countries.size;
+            document.getElementById('statTopState').innerText = Object.keys(s).reduce((a,b)=>s[a]>s[b]?a:b, "N/A");
+            document.getElementById('statTopTeacher').innerText = Object.keys(t).reduce((a,b)=>t[a]>t[b]?a:b, "N/A");
+            document.getElementById('statCountries').innerText = c.size;
         }
 
         function updateDisplay() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const groupBy = document.getElementById('groupSelect').value;
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const g = document.getElementById('groupSelect').value;
             const container = document.getElementById('displayContainer');
-            
-            const filtered = students.filter(s => 
-                (s['Full Name'] || '').toLowerCase().includes(query) || 
-                (s['Nickname'] || '').toLowerCase().includes(query)
-            );
-
-            document.getElementById('resultCount').innerText = `${filtered.length} Students Displayed`;
+            const filtered = students.filter(x => (x.name||'').toLowerCase().includes(q) || (x.nick||'').toLowerCase().includes(q));
             container.innerHTML = '';
 
-            if (groupBy === 'none') {
-                renderGrid(container, filtered, "Class Directory");
+            if (g === 'none') {
+                renderGrid(container, filtered, "Civil Engineering Directory");
             } else {
                 const groups = {};
-                filtered.forEach(s => {
-                    const key = s[groupBy] || "Unspecified Area";
-                    if (!groups[key]) groups[key] = [];
-                    groups[key].push(s);
+                filtered.forEach(x => {
+                    const key = x[g] || "Unspecified Area";
+                    if(!groups[key]) groups[key] = [];
+                    groups[key].push(x);
                 });
-                Object.keys(groups).sort().forEach(g => renderGrid(container, groups[g], g));
+                Object.keys(groups).sort().forEach(k => renderGrid(container, groups[k], k));
             }
         }
 
         function renderGrid(parent, list, title) {
-            const section = document.createElement('section');
-            section.innerHTML = `
-                <div class="flex items-center gap-6 mb-10">
+            const sec = document.createElement('section');
+            sec.innerHTML = `
+                <div class="flex items-center gap-6 mb-12">
                     <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">${title}</h2>
-                    <div class="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                    ${list.map(s => `
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 card-hover">
-                            <div class="aspect-square w-full mb-6 rounded-[2rem] bg-slate-100 dark:bg-slate-900 overflow-hidden ring-4 ring-indigo-50 dark:ring-indigo-900/20">
-                                <img src="${formatImg(s['Profile Picture'])}" class="w-full h-full object-cover" loading="lazy">
+                    ${list.map(x => `
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-[3rem] shadow-sm border border-slate-100 dark:border-slate-700 card-hover relative">
+                            <div class="aspect-square w-full mb-6 rounded-[2.2rem] bg-slate-100 dark:bg-slate-900 overflow-hidden ring-4 ring-indigo-50 dark:ring-indigo-900/20">
+                                <img src="${formatImg(x.pic)}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300?text=Profile'">
                             </div>
-                            <h3 class="text-center font-black text-slate-800 dark:text-white text-lg leading-tight mb-1">${s['Full Name']}</h3>
-                            <p class="text-center text-indigo-500 font-bold italic text-sm mb-5">"${s['Nickname'] || ''}"</p>
-                            <div class="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 text-[11px]">
-                                <div class="flex justify-between font-bold"><span class="text-slate-400">STATE</span><span class="text-slate-700 dark:text-slate-300">${s['State'] || '-'}</span></div>
-                                <div class="flex justify-between font-bold"><span class="text-slate-400">PHONE</span><span class="text-slate-700 dark:text-slate-300">${s['Phone Number'] || '-'}</span></div>
+                            <h3 class="text-center font-black text-slate-800 dark:text-white text-lg leading-tight mb-1">${x.name || 'Anonymous'}</h3>
+                            <p class="text-center text-indigo-500 font-bold italic text-sm mb-5">"${x.nick || ''}"</p>
+                            <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 text-[10px] font-bold">
+                                <div class="flex justify-between uppercase"><span class="text-slate-400">State</span><span class="text-slate-700 dark:text-slate-200">${x.state || '-'}</span></div>
+                                <div class="flex justify-between uppercase"><span class="text-slate-400">LGA</span><span class="text-slate-700 dark:text-slate-200">${x.lga || '-'}</span></div>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             `;
-            parent.appendChild(section);
+            parent.appendChild(sec);
         }
 
-        // --- 5. PDF ENGINE ---
+        function formatImg(u) {
+            if(!u || !u.includes('id=')) return u;
+            return `https://drive.google.com/thumbnail?id=${u.split('id=')[1].split('&')[0]}&sz=w600`;
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+            localStorage.theme = isDark ? 'dark' : 'light';
+        }
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').innerText = '☀️';
+        }
+
+        // --- PDF EXPORT (4 per page) ---
         async function generateFullAlbum() {
             const btn = document.getElementById('pdfBtn');
-            btn.innerHTML = "🎨 Building Album...";
-            btn.disabled = true;
-
+            btn.innerText = "Processing..."; btn.disabled = true;
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
             const pw = doc.internal.pageSize.getWidth();
@@ -243,32 +276,32 @@
 
             // Cover
             doc.setFillColor(30, 27, 75); doc.rect(0, 0, pw, ph, 'F');
-            doc.setTextColor(255); doc.setFontSize(40); doc.text("CLASS ALBUM", pw/2, ph/2, {align:"center"});
+            doc.setTextColor(255); doc.setFontSize(22);
+            doc.text("ATBU BAUCHI", pw/2, ph/2 - 20, {align:"center"});
+            doc.setFontSize(32); doc.text("CIVIL ENGINEERING", pw/2, ph/2, {align:"center"});
+            doc.setFontSize(14); doc.text("CLASS OF 2026 OFFICIAL YEARBOOK", pw/2, ph/2 + 15, {align:"center"});
 
             for (let i = 0; i < students.length; i++) {
                 if (i % 4 === 0) doc.addPage();
                 const s = students[i];
                 const col = (i%4)%2; const row = Math.floor((i%4)/2);
                 const x = 15 + (col * 90); const y = 20 + (row * 130);
-                
-                doc.setDrawColor(220); doc.roundedRect(x, y, 85, 120, 5, 5);
-                
+                doc.setDrawColor(230); doc.roundedRect(x, y, 85, 120, 5, 5);
                 try {
                     const img = await new Promise(r => {
-                        const i = new Image(); i.crossOrigin="anonymous";
-                        i.onload = () => r(i); i.onerror = () => r(null);
-                        i.src = formatImg(s['Profile Picture']);
+                        const imgObj = new Image(); imgObj.crossOrigin="anonymous";
+                        imgObj.onload = () => r(imgObj); imgObj.onerror = () => r(null);
+                        imgObj.src = formatImg(s.pic);
                     });
                     if(img) doc.addImage(img, 'JPEG', x+17.5, y+10, 50, 50);
                 } catch(e) {}
-
-                doc.setTextColor(0); doc.setFontSize(12); doc.text(s['Full Name'] || '', x+42.5, y+70, {align:"center"});
-                doc.setTextColor(100); doc.setFontSize(8); 
-                doc.text(`Origin: ${s['LGA']}, ${s['State']}`, x+10, y+85);
-                doc.text(`Contact: ${s['Phone Number']}`, x+10, y+91);
+                doc.setTextColor(0); doc.setFontSize(12); doc.text(s.name || '', x+42.5, y+70, {align:"center"});
+                doc.setFontSize(8); doc.setTextColor(100);
+                doc.text(`Origin: ${s.state || '-'}`, x+10, y+85);
+                doc.text(`Phone: ${s.phone || '-'}`, x+10, y+91);
             }
-            doc.save("Class_Yearbook.pdf");
-            btn.innerHTML = "Download PDF"; btn.disabled = false;
+            doc.save("ATBU_Civil_2026_Album.pdf");
+            btn.innerText = "Export PDF"; btn.disabled = false;
         }
     </script>
 </body>
