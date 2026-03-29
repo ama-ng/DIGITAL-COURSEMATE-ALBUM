@@ -13,119 +13,126 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .card-hover:hover { transform: translateY(-6px); transition: all 0.3s ease; }
-        .slider-img { display: none; width: 100%; height: 450px; object-fit: cover; filter: brightness(0.6); }
-        .slider-img.active { display: block; animation: fadeIn 1s ease-in; }
+        .card-hover:hover { transform: translateY(-8px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slider-img { display: none; width: 100%; height: 500px; object-fit: cover; filter: brightness(0.4); }
+        .slider-img.active { display: block; animation: fadeIn 1.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col">
 
     <div id="authOverlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-6">
         <div class="bg-white dark:bg-slate-800 p-10 rounded-[3rem] shadow-2xl max-w-md w-full text-center border-t-8 border-indigo-600">
             <img src="logo.png" alt="ATBU Logo" class="w-24 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/100?text=ATBU'">
-            <h2 class="text-xl font-black mb-1 dark:text-white uppercase">Civil Engineering</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm font-bold tracking-widest uppercase">Class of 2026 Portal</p>
-            <input type="password" id="passInput" onkeydown="if(event.key==='Enter') verifyPass()" placeholder="Enter Portal Password" 
-                   class="w-full p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 outline-none focus:border-indigo-500 text-center font-bold tracking-widest mb-4">
-            <button onclick="verifyPass()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl transition shadow-xl">UNLOCK DIRECTORY</button>
-            <p id="errorMsg" class="text-red-500 text-xs mt-4 font-bold hidden">Invalid Password.</p>
+            <h2 class="text-xl font-black mb-1 dark:text-white uppercase tracking-tight">Civil Engineering</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 text-xs font-bold tracking-[0.2em] uppercase">Class of 2026 Portal</p>
+            <input type="password" id="passInput" onkeydown="if(event.key==='Enter') verifyPass()" placeholder="Enter Access Code" 
+                   class="w-full p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-700 dark:bg-slate-900 outline-none focus:border-indigo-500 text-center font-bold tracking-widest mb-4 transition-all">
+            <button onclick="verifyPass()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl transition shadow-xl uppercase tracking-widest">Unlock Directory</button>
+            <p id="errorMsg" class="text-red-500 text-xs mt-4 font-bold hidden">Incorrect Password. Please try again.</p>
         </div>
     </div>
 
-    <div id="appContent" class="hidden opacity-0 transition-opacity duration-1000">
+    <div id="appContent" class="hidden opacity-0 transition-opacity duration-1000 flex-grow">
         
-        <header class="bg-indigo-900 text-white py-10 px-6 text-center">
-            <img src="logo.png" alt="ATBU Logo" class="w-20 mx-auto mb-4" onerror="this.style.display='none'">
-            <h1 class="text-2xl md:text-4xl font-black tracking-tighter">ABUBAKAR TAFAWA BALEWA UNIVERSITY BAUCHI</h1>
-            <p class="text-indigo-300 font-bold mt-2 text-lg uppercase tracking-widest">Department of Civil Engineering | Class of 2026</p>
+        <header class="bg-indigo-950 text-white py-14 px-6 text-center border-b border-indigo-800">
+            <img src="logo.png" alt="ATBU Logo" class="w-24 mx-auto mb-6" onerror="this.style.display='none'">
+            <h1 class="text-2xl md:text-5xl font-black tracking-tighter mb-3 leading-tight">ABUBAKAR TAFAWA BALEWA UNIVERSITY</h1>
+            <h2 class="text-lg md:text-2xl font-bold text-indigo-400 uppercase tracking-[0.3em]">Civil Engineering Class of 2026</h2>
         </header>
 
-        <div class="relative w-full overflow-hidden bg-slate-800 h-[450px]">
-            <img src="atbu1.jpg" class="slider-img active" alt="ATBU Campus 1">
-            <img src="atbu2.jpg" class="slider-img" alt="ATBU Campus 2">
-            <img src="atbu3.jpg" class="slider-img" alt="ATBU Campus 3">
-            <div class="absolute inset-0 flex items-center justify-center p-6">
+        <div class="relative w-full overflow-hidden bg-slate-900 h-[500px]">
+            <img src="atbu1.jpg" class="slider-img active" alt="Campus 1">
+            <img src="atbu2.jpg" class="slider-img" alt="Campus 2">
+            <img src="atbu3.jpg" class="slider-img" alt="Campus 3">
+            <div class="absolute inset-0 flex items-center justify-center p-8">
                 <div class="max-w-4xl text-center text-white">
-                    <h2 class="text-3xl md:text-6xl font-black mb-6 italic leading-tight">"Building the Future, <br>One Structure at a Time."</h2>
-                    <p class="text-lg md:text-xl font-medium opacity-90 mb-8">Welcome to the official memory hub for our graduating class. Connect with classmates and preserve our journey together.</p>
+                    <h2 class="text-4xl md:text-7xl font-black mb-6 italic leading-none tracking-tighter">Engineers of <br><span class="text-indigo-400 underline decoration-indigo-500">Excellence.</span></h2>
+                    <p class="text-lg md:text-xl font-medium opacity-80 mb-10 max-w-2xl mx-auto">This portal serves as our digital legacy—a place to reconnect, remember, and celebrate our journey through ATBU Bauchi.</p>
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdngpZjlx1OXwB0QucMAaCif5DWQv-QMEnrgGm4f0IVVF0dGg/viewform" target="_blank" 
-                       class="bg-white text-indigo-900 px-8 py-4 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform inline-block">
-                        Register Your Profile
+                       class="bg-white text-indigo-950 px-10 py-5 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl inline-block">
+                        Add Your Profile
                     </a>
                 </div>
             </div>
         </div>
 
-        <nav class="sticky top-0 z-50 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center gap-4 shadow-lg">
+        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 glass-nav border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center gap-4 shadow-lg">
             <div class="flex items-center gap-4">
-                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition">
+                <button onclick="toggleTheme()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition shadow-inner">
                     <span id="themeIcon">🌙</span>
                 </button>
-                <div class="h-8 w-px bg-slate-300 dark:bg-slate-600 hidden sm:block"></div>
-                <span class="font-black text-indigo-600 dark:text-indigo-400 hidden sm:inline">ATBU CIVIL '26</span>
+                <div class="h-10 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+                <div class="hidden sm:block">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Current Portal</p>
+                    <p class="font-black text-indigo-600 dark:text-indigo-400 tracking-tight">ATBU CIVIL '26</p>
+                </div>
             </div>
             
             <div class="flex items-center gap-3">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdngpZjlx1OXwB0QucMAaCif5DWQv-QMEnrgGm4f0IVVF0dGg/viewform" target="_blank" 
-                   class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-md flex items-center gap-2">
-                    <span>Add My Info</span>
-                </a>
-                <button onclick="generateFullAlbum()" id="pdfBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition shadow-md">
-                    Export PDF
+                <button onclick="generateFullAlbum()" id="pdfBtn" class="bg-slate-900 dark:bg-indigo-600 hover:bg-black dark:hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest transition shadow-lg">
+                    Export Yearbook
                 </button>
-                <button onclick="logout()" class="p-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-                    </svg>
+                <button onclick="logout()" class="p-3 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition border border-red-100">
+                    <svg xmlns="font-bold h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                 </button>
             </div>
         </nav>
 
         <main class="max-w-7xl mx-auto p-6 lg:p-12">
             
-            <div id="statsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Major Origin</p>
-                    <h3 id="statTopState" class="text-3xl font-black text-indigo-600 dark:text-indigo-400">...</h3>
+            <div id="statsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Dominant State</p>
+                    <h3 id="statTopState" class="text-4xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">...</h3>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Favorite Mentor</p>
-                    <h3 id="statTopTeacher" class="text-3xl font-black text-green-600 dark:text-green-400">...</h3>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Popular Mentor</p>
+                    <h3 id="statTopTeacher" class="text-4xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter">...</h3>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Total Countries</p>
-                    <h3 id="statCountries" class="text-3xl font-black text-orange-600 dark:text-orange-400">...</h3>
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Countries Represented</p>
+                    <h3 id="statCountries" class="text-4xl font-black text-orange-600 dark:text-orange-400 tracking-tighter">...</h3>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 shadow-xl mb-16">
-                <div class="flex flex-col lg:flex-row gap-8">
+            <div class="bg-white dark:bg-slate-900 p-10 rounded-[4rem] border border-slate-100 dark:border-slate-800 shadow-2xl mb-20">
+                <div class="flex flex-col lg:flex-row gap-10">
                     <div class="flex-1">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Filter Dashboard</label>
-                        <input type="text" id="searchInput" onkeyup="updateDisplay()" placeholder="Search by name, nickname, or teacher..." 
-                               class="w-full bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border-none ring-2 ring-slate-100 dark:ring-slate-700 focus:ring-4 focus:ring-indigo-500 outline-none text-lg transition-all">
+                        <label class="block text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">Classmate Search</label>
+                        <input type="text" id="searchInput" onkeyup="updateDisplay()" placeholder="Search by name, nickname, or mentor..." 
+                               class="w-full bg-slate-50 dark:bg-slate-950 p-6 rounded-[2rem] border-none ring-2 ring-slate-100 dark:ring-slate-800 focus:ring-4 focus:ring-indigo-500 outline-none text-xl font-medium transition-all">
                     </div>
-                    <div class="w-full lg:w-80">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Group By Area</label>
-                        <select id="groupSelect" onchange="updateDisplay()" class="w-full bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border-none ring-2 ring-slate-100 dark:ring-slate-700 focus:ring-4 focus:ring-indigo-500 outline-none text-lg font-bold">
+                    <div class="w-full lg:w-96">
+                        <label class="block text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">Group by Origin</label>
+                        <select id="groupSelect" onchange="updateDisplay()" class="w-full bg-slate-50 dark:bg-slate-950 p-6 rounded-[2rem] border-none ring-2 ring-slate-100 dark:ring-slate-800 focus:ring-4 focus:ring-indigo-500 outline-none text-xl font-bold cursor-pointer">
                             <option value="none">Standard Grid</option>
-                            <option value="state">Group by State</option>
-                            <option value="lga">Group by LGA</option>
-                            <option value="country">Group by Country</option>
+                            <option value="state">Sort by State</option>
+                            <option value="lga">Sort by LGA</option>
+                            <option value="country">Sort by Country</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <div id="displayContainer" class="space-y-24"></div>
+            <div id="displayContainer" class="space-y-32"></div>
         </main>
     </div>
 
+    <footer class="bg-white dark:bg-slate-900 py-10 px-6 border-t border-slate-100 dark:border-slate-800 text-center mt-20">
+        <p class="text-slate-400 text-sm font-medium tracking-widest uppercase">
+            &copy; 2026 Abubakar Tafawa Balewa University | Civil Engineering
+        </p>
+        <p class="text-indigo-500 text-xs font-black mt-2 tracking-[0.3em] uppercase">
+            Developed by Arabo Modibbo
+        </p>
+    </footer>
+
     <script>
-        // --- CONFIGURATION ---
+        // --- DATA CONFIGURATION ---
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTQEM1GkYUrAHI8YxPQ-wcb1PMnkmsw4FzTApAaRwsxPw8L4ZwZHfaSU2vP5zAwDdyYnzJpTRXYKVS_/pub?gid=682763049&single=true&output=csv';
-        const APP_PASSWORD = 'ATBU_CIVIL_2026'; 
+        const APP_PASSWORD = 'CIVIL2026'; 
 
         let students = [];
 
@@ -135,46 +142,45 @@
                 document.getElementById('authOverlay').style.display = 'none';
                 document.getElementById('appContent').classList.remove('hidden');
                 setTimeout(() => document.getElementById('appContent').classList.add('opacity-100'), 50);
-                localStorage.setItem('atbu_auth', 'true');
+                localStorage.setItem('atbu_auth_civil_2026', 'true');
                 init();
             } else {
                 document.getElementById('errorMsg').classList.remove('hidden');
+                document.getElementById('passInput').value = '';
             }
         }
-        function logout() { localStorage.removeItem('atbu_auth'); location.reload(); }
-        if(localStorage.getItem('atbu_auth') === 'true') {
+        function logout() { localStorage.removeItem('atbu_auth_civil_2026'); location.reload(); }
+        if(localStorage.getItem('atbu_auth_civil_2026') === 'true') {
             document.getElementById('authOverlay').style.display = 'none';
             document.getElementById('appContent').classList.remove('hidden', 'opacity-0');
             init();
         }
 
-        // --- SLIDER ENGINE ---
+        // --- SLIDER LOGIC ---
         let slideIdx = 0;
         setInterval(() => {
             const slides = document.querySelectorAll('.slider-img');
-            slides.forEach(s => s.classList.remove('active'));
-            slideIdx = (slideIdx + 1) % slides.length;
-            slides[slideIdx].classList.add('active');
-        }, 5000);
+            if(slides.length > 0) {
+                slides.forEach(s => s.classList.remove('active'));
+                slideIdx = (slideIdx + 1) % slides.length;
+                slides[slideIdx].classList.add('active');
+            }
+        }, 6000);
 
-        // --- DATA NORMALIZER ---
+        // --- DATA MAPPING (Matches your Headers) ---
         function normalizeData(data) {
-            return data.map(row => {
-                const clean = {};
-                for(let key in row) {
-                    const k = key.toLowerCase();
-                    if(k.includes('name')) clean.name = row[key];
-                    else if(k.includes('nick')) clean.nick = row[key];
-                    else if(k.includes('picture')) clean.pic = row[key];
-                    else if(k.includes('teacher')) clean.teacher = row[key];
-                    else if(k.includes('phone')) clean.phone = row[key];
-                    else if(k.includes('state')) clean.state = row[key];
-                    else if(k.includes('lga')) clean.lga = row[key];
-                    else if(k.includes('country')) clean.country = row[key];
-                    else if(k.includes('email')) clean.email = row[key];
-                }
-                return clean;
-            });
+            return data.map(row => ({
+                name: row['Full Name'],
+                nick: row['Nickname'],
+                pic: row['Profile Picture'],
+                teacher: row['Favorite Teacher'],
+                phone: row['Phone Number'],
+                state: row['State'],
+                lga: row['LGA'],
+                country: row['Country'],
+                email: row['Email Address'],
+                quote: row['Senior Qoute'] // Using your spelling
+            }));
         }
 
         async function init() {
@@ -185,14 +191,14 @@
                     header: true, skipEmptyLines: true,
                     complete: (res) => {
                         students = normalizeData(res.data);
-                        calculateInsights(students);
+                        calculateStats(students);
                         updateDisplay();
                     }
                 });
-            } catch(e) { console.error("CSV Load Error:", e); }
+            } catch(e) { console.error("Data Fetch Error:", e); }
         }
 
-        function calculateInsights(data) {
+        function calculateStats(data) {
             const s = {}, t = {}, c = new Set();
             data.forEach(x => {
                 if(x.state) s[x.state] = (s[x.state] || 0) + 1;
@@ -204,44 +210,56 @@
             document.getElementById('statCountries').innerText = c.size;
         }
 
+        // --- RENDERING ENGINE ---
         function updateDisplay() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const g = document.getElementById('groupSelect').value;
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const groupKey = document.getElementById('groupSelect').value;
             const container = document.getElementById('displayContainer');
-            const filtered = students.filter(x => (x.name||'').toLowerCase().includes(q) || (x.nick||'').toLowerCase().includes(q));
+            
+            const filtered = students.filter(x => 
+                (x.name||'').toLowerCase().includes(query) || 
+                (x.nick||'').toLowerCase().includes(query) ||
+                (x.teacher||'').toLowerCase().includes(query)
+            );
+            
             container.innerHTML = '';
 
-            if (g === 'none') {
-                renderGrid(container, filtered, "Civil Engineering Directory");
+            if (groupKey === 'none') {
+                renderSection(container, filtered, "Graduating Class Directory");
             } else {
                 const groups = {};
                 filtered.forEach(x => {
-                    const key = x[g] || "Unspecified Area";
-                    if(!groups[key]) groups[key] = [];
-                    groups[key].push(x);
+                    const val = x[groupKey] || "Unspecified";
+                    if(!groups[val]) groups[val] = [];
+                    groups[val].push(x);
                 });
-                Object.keys(groups).sort().forEach(k => renderGrid(container, groups[k], k));
+                Object.keys(groups).sort().forEach(key => renderSection(container, groups[key], key));
             }
         }
 
-        function renderGrid(parent, list, title) {
+        function renderSection(parent, list, title) {
             const sec = document.createElement('section');
             sec.innerHTML = `
                 <div class="flex items-center gap-6 mb-12">
                     <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">${title}</h2>
-                    <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="h-1 flex-1 bg-indigo-50 dark:bg-slate-900 rounded-full"></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
                     ${list.map(x => `
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-[3rem] shadow-sm border border-slate-100 dark:border-slate-700 card-hover relative">
-                            <div class="aspect-square w-full mb-6 rounded-[2.2rem] bg-slate-100 dark:bg-slate-900 overflow-hidden ring-4 ring-indigo-50 dark:ring-indigo-900/20">
-                                <img src="${formatImg(x.pic)}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300?text=Profile'">
+                        <div class="bg-white dark:bg-slate-900 p-8 rounded-[3.5rem] shadow-sm border border-slate-100 dark:border-slate-800 card-hover relative flex flex-col">
+                            <div class="aspect-square w-full mb-8 rounded-[2.5rem] bg-slate-50 dark:bg-slate-950 overflow-hidden ring-8 ring-slate-50 dark:ring-slate-800">
+                                <img src="${formatImg(x.pic)}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400?text=Civil+Engineer'">
                             </div>
-                            <h3 class="text-center font-black text-slate-800 dark:text-white text-lg leading-tight mb-1">${x.name || 'Anonymous'}</h3>
-                            <p class="text-center text-indigo-500 font-bold italic text-sm mb-5">"${x.nick || ''}"</p>
-                            <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 text-[10px] font-bold">
-                                <div class="flex justify-between uppercase"><span class="text-slate-400">State</span><span class="text-slate-700 dark:text-slate-200">${x.state || '-'}</span></div>
-                                <div class="flex justify-between uppercase"><span class="text-slate-400">LGA</span><span class="text-slate-700 dark:text-slate-200">${x.lga || '-'}</span></div>
+                            <h3 class="text-center font-black text-slate-900 dark:text-white text-xl leading-tight mb-1 tracking-tight">${x.name || 'Anonymous'}</h3>
+                            <p class="text-center text-indigo-500 font-bold italic text-xs mb-6 uppercase tracking-widest">"${x.nick || 'No Nickname'}"</p>
+                            
+                            <div class="flex-grow italic text-center text-[11px] text-slate-500 mb-8 px-4 leading-relaxed">
+                                ${x.quote ? `&ldquo;${x.quote}&rdquo;` : 'Graduating with honor.'}
+                            </div>
+
+                            <div class="space-y-3 p-5 rounded-[2rem] bg-slate-50 dark:bg-slate-950 text-[10px] font-bold border border-slate-100 dark:border-slate-800">
+                                <div class="flex justify-between"><span class="text-slate-400 uppercase">Origin</span><span class="text-slate-800 dark:text-slate-200">${x.lga || ''}, ${x.state || ''}</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400 uppercase">Mentor</span><span class="text-slate-800 dark:text-slate-200">${x.teacher || '-'}</span></div>
                             </div>
                         </div>
                     `).join('')}
@@ -252,7 +270,7 @@
 
         function formatImg(u) {
             if(!u || !u.includes('id=')) return u;
-            return `https://drive.google.com/thumbnail?id=${u.split('id=')[1].split('&')[0]}&sz=w600`;
+            return `https://drive.google.com/thumbnail?id=${u.split('id=')[1].split('&')[0]}&sz=w800`;
         }
 
         function toggleTheme() {
@@ -265,28 +283,34 @@
             document.getElementById('themeIcon').innerText = '☀️';
         }
 
-        // --- PDF EXPORT (4 per page) ---
+        // --- YEARBOOK EXPORT ---
         async function generateFullAlbum() {
             const btn = document.getElementById('pdfBtn');
-            btn.innerText = "Processing..."; btn.disabled = true;
+            const originalText = btn.innerText;
+            btn.innerText = "Generating PDF..."; btn.disabled = true;
+            
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
             const pw = doc.internal.pageSize.getWidth();
             const ph = doc.internal.pageSize.getHeight();
 
-            // Cover
+            // COVER
             doc.setFillColor(30, 27, 75); doc.rect(0, 0, pw, ph, 'F');
-            doc.setTextColor(255); doc.setFontSize(22);
+            doc.setTextColor(255); doc.setFontSize(20);
             doc.text("ATBU BAUCHI", pw/2, ph/2 - 20, {align:"center"});
             doc.setFontSize(32); doc.text("CIVIL ENGINEERING", pw/2, ph/2, {align:"center"});
-            doc.setFontSize(14); doc.text("CLASS OF 2026 OFFICIAL YEARBOOK", pw/2, ph/2 + 15, {align:"center"});
+            doc.setFontSize(12); doc.text("OFFICIAL CLASS OF 2026 YEARBOOK", pw/2, ph/2 + 15, {align:"center"});
+            doc.setFontSize(8); doc.text("CURATED BY ARABO MODIBBO", pw/2, ph - 20, {align:"center"});
 
             for (let i = 0; i < students.length; i++) {
                 if (i % 4 === 0) doc.addPage();
                 const s = students[i];
-                const col = (i%4)%2; const row = Math.floor((i%4)/2);
+                const pos = i % 4;
+                const col = pos % 2; const row = Math.floor(pos / 2);
                 const x = 15 + (col * 90); const y = 20 + (row * 130);
-                doc.setDrawColor(230); doc.roundedRect(x, y, 85, 120, 5, 5);
+                
+                doc.setDrawColor(240); doc.roundedRect(x, y, 85, 120, 5, 5);
+                
                 try {
                     const img = await new Promise(r => {
                         const imgObj = new Image(); imgObj.crossOrigin="anonymous";
@@ -295,13 +319,18 @@
                     });
                     if(img) doc.addImage(img, 'JPEG', x+17.5, y+10, 50, 50);
                 } catch(e) {}
-                doc.setTextColor(0); doc.setFontSize(12); doc.text(s.name || '', x+42.5, y+70, {align:"center"});
-                doc.setFontSize(8); doc.setTextColor(100);
+                
+                doc.setTextColor(0); doc.setFontSize(12); doc.text(s.name || 'Civil Engineer', x+42.5, y+70, {align:"center"});
+                doc.setFontSize(7); doc.setTextColor(100);
                 doc.text(`Origin: ${s.state || '-'}`, x+10, y+85);
-                doc.text(`Phone: ${s.phone || '-'}`, x+10, y+91);
+                doc.text(`Contact: ${s.phone || '-'}`, x+10, y+91);
+                
+                doc.setFontSize(6); doc.setTextColor(150);
+                const quoteText = s.quote ? doc.splitTextToSize(`"${s.quote}"`, 65) : "";
+                doc.text(quoteText, x+10, y+100);
             }
-            doc.save("ATBU_Civil_2026_Album.pdf");
-            btn.innerText = "Export PDF"; btn.disabled = false;
+            doc.save("ATBU_Civil_2026_Yearbook.pdf");
+            btn.innerText = originalText; btn.disabled = false;
         }
     </script>
 </body>
